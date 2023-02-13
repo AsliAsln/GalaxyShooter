@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace GalaxyShooter.Scripts
@@ -6,7 +7,11 @@ namespace GalaxyShooter.Scripts
     {
         [SerializeField]
         private float _speed = 5.0f;
-     
+
+        [SerializeField] 
+        private GameObject laserPrefab;
+        private float _fireRate = 0.25f;
+        private float _canFire = 0.0f;
         
         // Start is called before the first frame update
         void Start()
@@ -18,8 +23,28 @@ namespace GalaxyShooter.Scripts
         void Update()
         {
             Movement();
+            
+         
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+               Shoot();
+                
+            }
         }
 
+        private void Shoot()
+        {
+            //cool down bullet
+                if (Time.time > _canFire)
+                {
+                    //spawn laser
+                    Instantiate(laserPrefab, transform.position + new Vector3(0, 1, 0),
+                        quaternion.identity);
+                    
+                    _canFire = Time.time + _fireRate;
+                }
+
+        }
         private void Movement()
         {
             float horizontalInput = Input.GetAxis("Horizontal");
