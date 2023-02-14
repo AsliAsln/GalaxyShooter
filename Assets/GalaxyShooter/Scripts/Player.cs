@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,11 +9,17 @@ namespace GalaxyShooter.Scripts
     {
         [SerializeField]
         private float _speed = 5.0f;
-
         [SerializeField] 
         private GameObject laserPrefab;
+        [SerializeField] 
+        private GameObject tripleShotPrefab;
+        [SerializeField]
         private float _fireRate = 0.25f;
+        [SerializeField]
         private float _canFire = 0.0f;
+
+        public bool _canTripleShoot=false;
+        
         
         // Start is called before the first frame update
         void Start()
@@ -27,7 +35,9 @@ namespace GalaxyShooter.Scripts
          
             if (Input.GetKeyDown(KeyCode.Space))
             {
-               Shoot();
+               
+
+                Shoot();
                 
             }
         }
@@ -37,14 +47,24 @@ namespace GalaxyShooter.Scripts
             //cool down bullet
                 if (Time.time > _canFire)
                 {
-                    //spawn laser
-                    Instantiate(laserPrefab, transform.position + new Vector3(0, 1, 0),
-                        quaternion.identity);
-                    
+                    var position = transform.position;
+                    if (_canTripleShoot)
+                    {
+                         //spawn triple laser
+                         Instantiate(tripleShotPrefab, position + new Vector3(0, 0, 0),
+                             quaternion.identity);
+                    }
+                    else
+                    {
+                        //spawn one laser
+                        Instantiate(laserPrefab, position + new Vector3(0, 1, 0),
+                            quaternion.identity);
+                    }
                     _canFire = Time.time + _fireRate;
                 }
 
         }
+
         private void Movement()
         {
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -79,6 +99,17 @@ namespace GalaxyShooter.Scripts
             }
 
         }
-        
+
+        public void TripleShotPowerupOn()
+        {
+            _canTripleShoot = true;
+            StartCoroutine(TripleShotPowerDownRoutine());
+        }
+
+        IEnumerator TripleShotPowerDownRoutine()
+        {
+            yield return new WaitForSeconds(5.0f);
+            _canTripleShoot = false;
+        }
     }
 }

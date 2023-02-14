@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Upgrade_Triple
   layers:
   - Default
   - TransparentFX
@@ -44,6 +45,6 @@ TagManager:
   - name: Foreground
     uniqueID: 1515563847
     locked: 0
-  - name: Player
+  - name: Background
     uniqueID: 1202452047
     locked: 0
