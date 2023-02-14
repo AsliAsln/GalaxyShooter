@@ -9,6 +9,8 @@ namespace GalaxyShooter.Scripts
     {
         [SerializeField]
         private float _speed = 5.0f;
+        [SerializeField]
+        private float _boostSpeed = 1.5f;
         [SerializeField] 
         private GameObject laserPrefab;
         [SerializeField] 
@@ -18,7 +20,8 @@ namespace GalaxyShooter.Scripts
         [SerializeField]
         private float _canFire = 0.0f;
 
-        public bool _canTripleShoot=false;
+        private bool _canTripleShoot=false;
+        private bool _isSpeedBoostActive=false;
         
         
         // Start is called before the first frame update
@@ -41,6 +44,7 @@ namespace GalaxyShooter.Scripts
                 
             }
         }
+        
 
         private void Shoot()
         {
@@ -69,11 +73,22 @@ namespace GalaxyShooter.Scripts
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
+
+            if (_isSpeedBoostActive)
+            {
+                transform.Translate(Vector3.right * (_speed * _boostSpeed * horizontalInput * Time.deltaTime));
+                //horizontal move
+                transform.Translate(Vector3.up * (_speed * _boostSpeed * verticalInput * Time.deltaTime));  
+            }
+            else
+            {
+                //vertical move
+                transform.Translate(Vector3.right * (_speed * horizontalInput * Time.deltaTime));
+                //horizontal move
+                transform.Translate(Vector3.up * (_speed * verticalInput * Time.deltaTime));
+            }
             
-            //vertical move
-            transform.Translate(Vector3.right * (_speed * horizontalInput * Time.deltaTime));
-            //horizontal move
-            transform.Translate(Vector3.up * (_speed * verticalInput * Time.deltaTime));
+
 
             //player bounds check -8<x<8  -4<y<0
             if (transform.position.x  < -8)
@@ -106,7 +121,19 @@ namespace GalaxyShooter.Scripts
             StartCoroutine(TripleShotPowerDownRoutine());
         }
 
+        public void SpeedBoostPowerupOn()
+        {
+            _isSpeedBoostActive = true;
+            StartCoroutine(SpeedBoostPowerDownRoutine());
+        }
+
         IEnumerator TripleShotPowerDownRoutine()
+        {
+            yield return new WaitForSeconds(5.0f);
+            _canTripleShoot = false;
+        }
+
+        IEnumerator SpeedBoostPowerDownRoutine()
         {
             yield return new WaitForSeconds(5.0f);
             _canTripleShoot = false;

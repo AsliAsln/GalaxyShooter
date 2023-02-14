@@ -223,11 +223,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
+  _boostSpeed: 1.5
   laserPrefab: {fileID: 6475649081402825034, guid: 6811c3e70b662114c83c2631806f3f29, type: 3}
   tripleShotPrefab: {fileID: 5256061366969152106, guid: d55dc5f7a4aa73c4985d4f6f0307976a, type: 3}
   _fireRate: 0.25
   _canFire: 0
-  _canTripleShoot: 0
 --- !u!50 &582084612
 Rigidbody2D:
   serializedVersion: 4
