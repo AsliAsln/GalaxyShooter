@@ -15,10 +15,14 @@ namespace GalaxyShooter.Scripts
         private GameObject laserPrefab;
         [SerializeField] 
         private GameObject tripleShotPrefab;
+        [SerializeField] 
+        private GameObject explosionPrefab;
         [SerializeField]
         private float _fireRate = 0.25f;
         [SerializeField]
         private float _canFire = 0.0f;
+
+        private byte _lives = 3;
 
         private bool _canTripleShoot=false;
         private bool _isSpeedBoostActive=false;
@@ -35,13 +39,9 @@ namespace GalaxyShooter.Scripts
         {
             Movement();
             
-         
             if (Input.GetKeyDown(KeyCode.Space))
             {
-               
-
                 Shoot();
-                
             }
         }
         
@@ -115,6 +115,16 @@ namespace GalaxyShooter.Scripts
 
         }
 
+        public void Damage()
+        {
+            _lives--;
+            if (_lives < 0)
+            {
+                Instantiate(explosionPrefab, transform.position, quaternion.identity);
+                Destroy(gameObject);
+            }
+        }
+
         public void TripleShotPowerupOn()
         {
             _canTripleShoot = true;
@@ -136,7 +146,7 @@ namespace GalaxyShooter.Scripts
         IEnumerator SpeedBoostPowerDownRoutine()
         {
             yield return new WaitForSeconds(5.0f);
-            _canTripleShoot = false;
+            _isSpeedBoostActive = false;
         }
     }
 }

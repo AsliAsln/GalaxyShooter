@@ -5,7 +5,7 @@ namespace GalaxyShooter.Scripts
 {
     public class Powerup : MonoBehaviour
     {
-        private float _speed;
+        private float _speed=5f;
         [SerializeField] 
         private byte powerupId; //0 for triple shot, 1 for speed, 2 for shield
         private void Update()

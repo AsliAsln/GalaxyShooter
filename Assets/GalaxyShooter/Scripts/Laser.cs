@@ -20,8 +20,13 @@ namespace GalaxyShooter.Scripts
                 
             if (transform.position.y > 5.3)
             {
+                if (transform.parent != null)
+                {
+                    Destroy(transform.parent.gameObject);
+                }
                 Destroy(gameObject);
             }
+            
         }
     }
 }
