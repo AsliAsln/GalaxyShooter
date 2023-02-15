@@ -17,15 +17,18 @@ namespace GalaxyShooter.Scripts
         private GameObject tripleShotPrefab;
         [SerializeField] 
         private GameObject explosionPrefab;
+        [SerializeField] 
+        private GameObject Shields;
         [SerializeField]
         private float _fireRate = 0.25f;
         [SerializeField]
         private float _canFire = 0.0f;
 
-        private byte _lives = 3;
+        private int _lives = 3;
 
         private bool _canTripleShoot=false;
         private bool _isSpeedBoostActive=false;
+        private bool _isShieldActive=false;
         
         
         // Start is called before the first frame update
@@ -117,6 +120,12 @@ namespace GalaxyShooter.Scripts
 
         public void Damage()
         {
+            if (_isShieldActive)
+            {
+                _isShieldActive = false;
+                Shields.SetActive(false);
+                return;
+            }
             _lives--;
             if (_lives < 0)
             {
@@ -136,6 +145,12 @@ namespace GalaxyShooter.Scripts
             _isSpeedBoostActive = true;
             StartCoroutine(SpeedBoostPowerDownRoutine());
         }
+        public void ShieldPowerupOn()
+        {
+            _isShieldActive = true;
+            Shields.SetActive(true);
+            StartCoroutine(ShieldPowerDownRoutine());
+        }
 
         IEnumerator TripleShotPowerDownRoutine()
         {
@@ -148,5 +163,11 @@ namespace GalaxyShooter.Scripts
             yield return new WaitForSeconds(5.0f);
             _isSpeedBoostActive = false;
         }
+        IEnumerator ShieldPowerDownRoutine()
+        {
+            yield return new WaitForSeconds(5.0f);
+            _isShieldActive = false;
+        }
+        
     }
 }

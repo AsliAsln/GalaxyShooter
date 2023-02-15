@@ -34,7 +34,7 @@ namespace GalaxyShooter.Scripts
                     //enable shields
                     if (powerupId == 2)
                     {
-                        
+                        player.ShieldPowerupOn();
                     }
 
                     
