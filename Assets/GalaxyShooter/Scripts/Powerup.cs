@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GalaxyShooter.Scripts
 {
@@ -8,6 +9,9 @@ namespace GalaxyShooter.Scripts
         private float _speed=5f;
         [SerializeField] 
         private byte powerupId; //0 for triple shot, 1 for speed, 2 for shield
+        [FormerlySerializedAs("_clip")] [SerializeField]
+        private AudioClip clip;
+        
         private void Update()
         {
             transform.Translate(Vector3.down * (_speed * Time.deltaTime));
@@ -17,7 +21,7 @@ namespace GalaxyShooter.Scripts
         {
             if (other.tag == "Player")
             {
-                
+                AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
                 Player player = other.GetComponent < Player>();
                 if (player != null)
                 {

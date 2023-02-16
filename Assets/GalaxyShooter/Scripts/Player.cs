@@ -33,6 +33,8 @@ namespace GalaxyShooter.Scripts
         public bool _isShieldActive=false;
         private GameManager _gameManager;
         private SpawnManager _spawnManager;
+
+        private AudioSource _laserSound;
         
         void Start()
         {
@@ -40,6 +42,7 @@ namespace GalaxyShooter.Scripts
             _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
             _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+            _laserSound = GetComponent<AudioSource>();
             
             if (_uiManager != null)
             {
@@ -67,6 +70,7 @@ namespace GalaxyShooter.Scripts
             //cool down bullet
                 if (Time.time > _canFire)
                 {
+                    _laserSound.Play();
                     var position = transform.position;
                     if (_canTripleShoot)
                     {

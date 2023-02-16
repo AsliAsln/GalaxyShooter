@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using GalaxyShooter.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class EnemyAI : MonoBehaviour
 {
     private float _speed=3f;
+    [FormerlySerializedAs("_clip")] [SerializeField]
+    private AudioClip clip;
 
     [SerializeField] 
     private GameObject enemyExplosion;
@@ -16,7 +19,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-       
+
     }
 
     // Update is called once per frame
@@ -36,6 +39,7 @@ public class EnemyAI : MonoBehaviour
         {
             Destroy(gameObject);
             Instantiate(enemyExplosion, transform.position, Quaternion.identity);
+            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
             _uiManager.UpdateScore();
             Destroy(other.gameObject);
         }
@@ -46,6 +50,9 @@ public class EnemyAI : MonoBehaviour
             {
                 player.Damage();
             }
+            Instantiate(enemyExplosion, transform.position, Quaternion.identity);
+            AudioSource.PlayClipAtPoint(clip,  Camera.main.transform.position);
+            Destroy(this.gameObject);
 
         }
     }
