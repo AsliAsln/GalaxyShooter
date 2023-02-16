@@ -1,7 +1,7 @@
 # GalaxyShooter
 **About game**
 
-It is a clone of ["Space Shooter"] (https://store.steampowered.com/app/1006090/Retro_Space_Shooter/?l=english)
+It is a clone of ["Space Shooter"](https://store.steampowered.com/app/1006090/Retro_Space_Shooter/?l=english)
 I made this game to improve my basic skills in unity and practice C#.
 
 
