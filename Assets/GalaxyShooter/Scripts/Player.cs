@@ -24,20 +24,33 @@ namespace GalaxyShooter.Scripts
         [SerializeField]
         private float _canFire = 0.0f;
 
+        private UIManager _uiManager;
+        
         private int _lives = 3;
 
         private bool _canTripleShoot=false;
         private bool _isSpeedBoostActive=false;
-        private bool _isShieldActive=false;
+        public bool _isShieldActive=false;
+        private GameManager _gameManager;
+        private SpawnManager _spawnManager;
         
-        
-        // Start is called before the first frame update
         void Start()
         {
             transform.position = new Vector3(0, 0, 0);
+            _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+            _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+            
+            if (_uiManager != null)
+            {
+                _uiManager.UpdateLives(_lives);
+            }
+            if (_spawnManager != null)
+            {
+                _spawnManager.StartSpawnRoutines();
+            }
         }
 
-        // Update is called once per frame
         void Update()
         {
             Movement();
@@ -120,17 +133,22 @@ namespace GalaxyShooter.Scripts
 
         public void Damage()
         {
-            if (_isShieldActive)
+            if (Shields.activeSelf)
             {
+                Debug.Log("kapat kalkanı ulen");
                 _isShieldActive = false;
                 Shields.SetActive(false);
                 return;
             }
             _lives--;
-            if (_lives < 0)
+            _uiManager.UpdateLives(_lives);
+            if (_lives <= 0)
             {
                 Instantiate(explosionPrefab, transform.position, quaternion.identity);
+                _gameManager.gameOver = true;
+                _uiManager.ShowTitleScreen();
                 Destroy(gameObject);
+                
             }
         }
 
@@ -167,7 +185,7 @@ namespace GalaxyShooter.Scripts
         {
             yield return new WaitForSeconds(5.0f);
             _isShieldActive = false;
+            Shields.SetActive(false);
         }
-        
     }
 }
